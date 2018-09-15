@@ -24,7 +24,7 @@ def validateLine(gedcomLine):
         except ValueError:
             return 'invalid'
 
-        if level >= 0 and level < len(noArgs) and tag in noArgs[level]:
+        if level >= 0 and level < len(noArgumentTags) and tag in noArgumentTags[level]:
             return [level, tag, None]
         else:
             return 'invalid'
@@ -42,7 +42,7 @@ def validateLine(gedcomLine):
         except ValueError:
             return 'invalid'
 
-        if level >= 0 and level < len(noArgs) and tag in noArgs[level]:
+        if level >= 0 and level < len(noArgumentTags) and tag in noArgumentTags[level]:
             return 'invalid'
 
         if level >= 0 and level < len(validTags) and tag in validTags[level]:
