@@ -1,60 +1,15 @@
+import datetime
+
 level0 = frozenset(('INDI', 'FAM', 'HEAD', 'TRLR', 'NOTE'))
 level1 = frozenset(('NAME', 'SEX', 'BIRT', 'DEAT', 'FAMC', 'FAMS', 'MARR', 'HUSB', 'WIFE', 'CHIL', 'DIV'))
 level2 = frozenset(['DATE'])
+
 validTags = [level0, level1, level2]
+
 noArgs = [frozenset(('HEAD', 'TRLR')), frozenset(('BIRT', 'DEAT', 'MARR', 'DIV'))]
 
-gedcomFileName = 'myInput.ged'
+gedcomFileName = 'proj02test.ged'
 gedcomFile = open(gedcomFileName, 'r')
-
-def leapYear(year):
-    if (year % 4) == 0:
-        if (year % 100) == 0:
-            if (year % 400) == 0:
-                return 'true'
-            else:
-                return 'false'
-        else:
-            return 'true'
-    else:
-        return 'false'
-
-def validDate(date):
-    validMonths = frozenset(('JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'))
-    thirtyDayMonths = frozenset(('APR', 'JUN', 'NOV', 'SEP'))
-    
-    if len(date) != 3:
-        return 'N'
-
-    try:
-        day = int(date[0])
-        year = int(date[2])
-    except ValueError:
-        return 'N'
-
-    month = date[1]
-
-    if month in validMonths and day >= 1 and day <= 31:
-        if month == 'FEB':
-            if leapYear(year) == 'true':
-                if day <= 29:
-                    return 'Y'
-                else:
-                    return 'N'
-            else:
-                if day <= 28:
-                    return 'Y'
-                else:
-                    return 'N'
-        elif month in thirtyDayMonths:
-            if day <= 30:
-                return 'Y'
-            else:
-                return 'N'
-        else:
-            return 'Y'
-    else:
-        return 'N'
 
 def validateLine(gedcomLine):
     line = gedcomLine.strip().split(' ', 2)
@@ -92,7 +47,11 @@ def validateLine(gedcomLine):
 
         if level >= 0 and level < len(validTags) and tag in validTags[level]:
             if tag == 'DATE':
-                valid = validDate(arguments.split())
+                try:
+                    datetime.datetime.strptime(arguments, '%d %b %Y')
+                    valid = 'Y'
+                except ValueError:
+                    valid = 'N'
                 return '%s|%s|%s|%s' % (level, tag, valid, arguments)
             else:
                 return '%s|%s|Y|%s' % (level, tag, arguments)
