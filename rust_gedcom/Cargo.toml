@@ -1,0 +1,6 @@
+[package]
+name = "rust_gedcom"
+version = "0.1.0"
+authors = ["s1nus <chuckhead7@gmail.com>"]
+
+[dependencies]
