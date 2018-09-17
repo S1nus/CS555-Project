@@ -1,5 +1,4 @@
 import datetime
-from prettytable import PrettyTable
 
 level0 = frozenset(['INDI', 'FAM', 'NOTE'])
 level1 = frozenset(['NAME', 'SEX', 'FAMC', 'FAMS', 'HUSB', 'WIFE', 'CHIL'])
