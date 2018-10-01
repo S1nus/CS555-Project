@@ -11,13 +11,21 @@ validLevels = frozenset([0, 1, 2])
 validTagsNoArgs = [frozenset(['HEAD', 'TRLR']), frozenset(['BIRT', 'DEAT', 'MARR', 'DIV'])]
 validLevelsNoArgs = frozenset([0, 1])
 
-gedcomFileName = 'test.ged'
-gedcomFile = open(gedcomFileName, 'r')
+gedcomFile = None
+gedcomFileName = input('Please enter the name of your GEDCOM file:\n')
+
+while gedcomFile == None:
+    try:
+        gedcomFile = open(gedcomFileName, 'r')
+    except FileNotFoundError:
+        gedcomFileName = input('File \"%s\" not found. Please re-enter the name of your GEDCOM file:\n' % gedcomFileName)
 validatedFile = []
 
 LEVEL = 0
 TAG = 1
 ARG = 2
+
+exit = False
 
 def validateFile(gedcomFile):
     validatedFile = []
@@ -207,5 +215,29 @@ for i in individualCol:
 for f in familyCol:
     prettyFamilyTable.add_row([f['ID'], f['Married'], f['Divorced'], f['Husband ID'], f['Husband Name'], f['Wife ID'], f['Wife Name'], f['Children']])
 
-print(prettyIndividualTable)
-print(prettyFamilyTable)
+command = input('\nWhat would you like to do? Type \"help\" for a list of commands\n')
+print('\n')
+
+while command != 'exit':
+    if command == 'help':
+        print('----------------------Commands----------------------')
+        print('individuals: print the table of individuals from the GEDCOM file.')
+        print('families: print the table of families from the GEDCOM file.')
+        print('exit: exit the program')
+        print('help: print this help message\n')
+        command = input('What would you like to do?\n')
+        print('\n')
+    elif command == 'individuals':
+        print('Individual Table')
+        print(prettyIndividualTable)
+        command = input('What would you like to do?\n')
+        print('\n')
+    elif command == 'families':
+        print(prettyFamilyTable)
+        command = input('What would you like to do?\n')
+        print('\n')
+    elif command == 'exit':
+        print('Goodbye!\n')
+    else:
+        print('Command \"%s\" not found. Type \"help\" for a list of commands.' % command)
+        command = input('What would you like to do?\n')
