@@ -1,4 +1,5 @@
 import datetime
+from prettytable import PrettyTable
 
 level0 = frozenset(['INDI', 'FAM', 'NOTE'])
 level1 = frozenset(['NAME', 'SEX', 'FAMC', 'FAMS', 'HUSB', 'WIFE', 'CHIL'])
@@ -197,8 +198,14 @@ tables = parseFile(validatedFile)
 individualCol = buildIndividualCollection(tables[0])
 familyCol = buildFamilyCollection(tables[1], individualCol)
 
+prettyIndividualTable = PrettyTable(['ID', 'Name', 'Gender', 'Birthday', 'Age', 'Alive', 'Death', 'Child', 'Spouse'])
+prettyFamilyTable = PrettyTable(['ID', 'Married', 'Divorced', 'Husband ID', 'Husband Name', 'Wife ID', 'Wife Name', 'Children'])
+
 for i in individualCol:
-    print(i)
+    prettyIndividualTable.add_row([i['ID'], i['Name'], i['Gender'], i['Birthday'], i['Age'], i['Alive'], i['Death'], i['Child'], i['Spouse']])
 
 for f in familyCol:
-    print(f)
+    prettyFamilyTable.add_row([f['ID'], f['Married'], f['Divorced'], f['Husband ID'], f['Husband Name'], f['Wife ID'], f['Wife Name'], f['Children']])
+
+print(prettyIndividualTable)
+print(prettyFamilyTable)
