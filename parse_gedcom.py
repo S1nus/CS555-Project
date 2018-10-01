@@ -69,6 +69,9 @@ def parseFile(validatedFile):
     individual = {'INDI': None, 'NAME': None, 'SEX': None, 'BIRT': None, 'DEAT': None, 'FAMC': None, 'FAMS': []}
     family = {'FAM': None, 'MARR': None, 'DIV': None, 'HUSB': None, 'WIFE': None, 'CHIL': []}
 
+    indiList = []
+    famList = []
+
     while lineNum < fileLength:
         line = validatedFile[lineNum]
         if line[TAG] == 'INDI':
@@ -123,53 +126,69 @@ def parseFile(validatedFile):
 
 def buildIndividualCollection(individualTable):
     individualCol = []
+    indiList = []
 
     for individual in individualTable:
-        newIndividual = {'ID': None, 'Name': None, 'Gender': None, 'Birthday': None, 'Age': None, 'Alive': None, 'Death': None, 'Child': None, 'Spouse': []}
-        
-        newIndividual['ID'] = individual['INDI']
-        newIndividual['Name'] = individual['NAME']
-        newIndividual['Gender'] = individual['SEX']
-        newIndividual['Child'] = individual['FAMC']
-        newIndividual['Spouse'] = individual['FAMS']
-        
-        birthday = datetime.datetime.strptime(individual['BIRT'], '%d %b %Y')
-        newIndividual['Birthday'] = birthday.strftime('%Y-%m-%d')
-        date = datetime.date.today()
-
-        if individual['DEAT'] == None:
-            newIndividual['Alive'] = 'True'
+        if individual['INDI'] in indiList:
+            print('Error: an individual with ID %s already exists. Skipping individuals addition to collection.' % individual['INDI'])
+        elif individual['INDI'] == None:
+            print('Error: No ID')
         else:
-            newIndividual['Alive'] = 'False'
-            date = datetime.datetime.strptime(individual['DEAT'], '%d %b %Y')
-            newIndividual['Death'] = date.strftime('%Y-%m-%d')
+            newIndividual = {'ID': None, 'Name': None, 'Gender': None, 'Birthday': None, 'Age': None, 'Alive': None, 'Death': None, 'Child': None, 'Spouse': []}
         
-        newIndividual['Age'] = date.year - birthday.year - ((date.month, date.day) < (birthday.month, birthday.day))
+            newIndividual['ID'] = individual['INDI']
+            newIndividual['Name'] = individual['NAME']
+            newIndividual['Gender'] = individual['SEX']
+            newIndividual['Child'] = individual['FAMC']
+            newIndividual['Spouse'] = individual['FAMS']
         
-        individualCol.append(newIndividual)
+            birthday = datetime.datetime.strptime(individual['BIRT'], '%d %b %Y')
+            newIndividual['Birthday'] = birthday.strftime('%Y-%m-%d')
+            date = datetime.date.today()
+
+            if individual['DEAT'] == None:
+                newIndividual['Alive'] = 'True'
+            else:
+                newIndividual['Alive'] = 'False'
+                date = datetime.datetime.strptime(individual['DEAT'], '%d %b %Y')
+                newIndividual['Death'] = date.strftime('%Y-%m-%d')
+        
+            newIndividual['Age'] = date.year - birthday.year - ((date.month, date.day) < (birthday.month, birthday.day))
+        
+            individualCol.append(newIndividual)
+            indiList.append(newIndividual['ID'])
+
     return individualCol
 
 def buildFamilyCollection(familyTable, individualCol):
     familyCol = []
+    famList = []
 
     for family in familyTable:
-        newFamily = {'ID': None, 'Married': None, 'Divorced': None, 'Husband ID': None, 'Husband Name': None, 'Wife ID': None, 'Wife Name': None, 'Children': []}
+        if family['FAM'] in famList:
+            print('Error: a family  with ID %s already exists. Skipping family addition to collection.' % family['FAM'])
+        elif family['FAM'] == None:
+            print('Error: no ID')
+        else:
+            newFamily = {'ID': None, 'Married': None, 'Divorced': None, 'Husband ID': None, 'Husband Name': None, 'Wife ID': None, 'Wife Name': None, 'Children': []}
 
-        newFamily['ID'] = family['FAM']
-        newFamily['Married'] = datetime.datetime.strptime(family['MARR'], '%d %b %Y').strftime('%Y-%m-%d')
-        if family['DIV']:
-            newFamily['Divorced'] = datetime.datetime.strptime(family['DIV'], '%d %b %Y').strftime('%Y-%m-%d')
+            newFamily['ID'] = family['FAM']
+            newFamily['Married'] = datetime.datetime.strptime(family['MARR'], '%d %b %Y').strftime('%Y-%m-%d')
+            if family['DIV']:
+                newFamily['Divorced'] = datetime.datetime.strptime(family['DIV'], '%d %b %Y').strftime('%Y-%m-%d')
 
-        newFamily['Husband ID'] = family['HUSB']
-        newFamily['Wife ID'] = family['WIFE']
-        newFamily['Children'] = family['CHIL']
+            newFamily['Husband ID'] = family['HUSB']
+            newFamily['Wife ID'] = family['WIFE']
+            newFamily['Children'] = family['CHIL']
 
-        for individual in individualCol:
-            if individual['ID'] == family['HUSB']:
-                newFamily['Husband Name'] = individual['Name']
-            if individual['ID'] == family['WIFE']:
-                newFamily['Wife Name'] = individual['Name']
-        familyCol.append(newFamily)
+            for individual in individualCol:
+                if individual['ID'] == family['HUSB']:
+                    newFamily['Husband Name'] = individual['Name']
+                if individual['ID'] == family['WIFE']:
+                    newFamily['Wife Name'] = individual['Name']
+        
+            familyCol.append(newFamily)
+            famList.append(newFamily['ID'])
     
     return familyCol
 
