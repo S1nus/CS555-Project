@@ -1,29 +1,40 @@
 import unittest
+from datetime import datetime
 import gedcom
 
-def dateBeforeCurrent(collection, colType):
-    dateList = []
-    dateFormat = '%Y-%m-%d'
+def getDate(tag, entry):
+    return datetime.strptime(entry[tag], '%Y-%m-%d')
+
+def allDatesBeforeCurrent(collection, colType):
+    today = datetime.now()
+
     if colType == 'individuals':
-        for c in collection:
-            if c['Birthday']:
-                try:
-                    datetime.datetime.strptime(c['Birthday'], dateFormat)
-                except ValueError:
-                    dateList.append(c['ID'], 
-            dateList.append(c['Birthday'], c['Death'], c[], c[]
+        for entry in collection:
+            if entry['Birthday']:
+                if getDate('Birthday', entry) > today:
+                    return False
+            if entry['Death']:
+                if getDate('Death', entry) > today:
+                    return False
+        return True
     elif colType == 'families':
+        for entry in collection:
+            if entry['Married']:
+                if getDate('Married', entry) > today:
+                    return False
+            if entry['Divorced']:
+                if getDate('Divorced', entry) > today:
+                    return False
+        return True
     else:
         return False
 
 gedcomFile = open('../gedcom_files/us01.ged', 'r')
-tables = ged.parseFile(ged.validateFile(gedcomFile))
-indiCol = ged.buildIndividualCollection(tables[0])
-famCol = ged.buildFamilyCollection(tables[1], indiCol)
-indiIDs = getIDs(indiCol)
-famIDs = getIDs(famCol)
+collection = gedcom.parseFile(gedcom.validateFile(gedcomFile))
+indiCol = gedcom.buildIndividualCollection(collection)
+famCol = gedcom.buildFamilyCollection(collection)
 
-class datesBeforeCurrent(unittest.TestCase):
+class TestAllDatesBeforeCurrent(unittest.TestCase):
     def test_individualAllDatesBeforeCurrent(self):
         self.assertTrue(allDatesBeforeCurrent(indiCol, 'individuals'))
 
