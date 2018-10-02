@@ -11,21 +11,23 @@ validLevels = frozenset([0, 1, 2])
 validTagsNoArgs = [frozenset(['HEAD', 'TRLR']), frozenset(['BIRT', 'DEAT', 'MARR', 'DIV'])]
 validLevelsNoArgs = frozenset([0, 1])
 
-gedcomFile = None
-gedcomFileName = input('Please enter the name of your GEDCOM file:\n')
-
-while gedcomFile == None:
-    try:
-        gedcomFile = open(gedcomFileName, 'r')
-    except FileNotFoundError:
-        gedcomFileName = input('File \"%s\" not found. Please re-enter the name of your GEDCOM file:\n' % gedcomFileName)
-validatedFile = []
-
 LEVEL = 0
 TAG = 1
 ARG = 2
 
 exit = False
+
+def readFile():
+    gedcomFile = None
+    gedcomFileName = input('Please enter the name of your GEDCOM file:\n')
+
+    while gedcomFile == None:
+        try:
+            gedcomFile = open(gedcomFileName, 'r')
+        except FileNotFoundError:
+            gedcomFileName = input('File \"%s\" not found. Please re-enter the name of your GEDCOM file:\n' % gedcomFileName)
+
+    return gedcomFile
 
 def validateFile(gedcomFile):
     validatedFile = []
@@ -133,7 +135,8 @@ def parseFile(validatedFile):
             family = {'FAM': None, 'MARR': None, 'DIV': None, 'HUSB': None, 'WIFE': None, 'CHIL': []}
     return [individualTable, familyTable]
 
-def buildIndividualCollection(individualTable):
+def buildIndividualCollection(gedcomCollection):
+    individualTable = gedcomCollection[0]
     individualCol = []
     indiList = []
 
@@ -169,7 +172,9 @@ def buildIndividualCollection(individualTable):
 
     return individualCol
 
-def buildFamilyCollection(familyTable, individualCol):
+def buildFamilyCollection(gedcomCollection):
+    individualCol = gedcomCollection[0]
+    familyTable = gedcomCollection[1]
     familyCol = []
     famList = []
 
@@ -191,53 +196,58 @@ def buildFamilyCollection(familyTable, individualCol):
             newFamily['Children'] = family['CHIL']
 
             for individual in individualCol:
-                if individual['ID'] == family['HUSB']:
-                    newFamily['Husband Name'] = individual['Name']
-                if individual['ID'] == family['WIFE']:
-                    newFamily['Wife Name'] = individual['Name']
+                if individual['INDI'] == family['HUSB']:
+                    newFamily['Husband Name'] = individual['NAME']
+                if individual['INDI'] == family['WIFE']:
+                    newFamily['Wife Name'] = individual['NAME']
         
             familyCol.append(newFamily)
             famList.append(newFamily['ID'])
     
     return familyCol
 
-validatedFile = validateFile(gedcomFile)
-tables = parseFile(validatedFile)
-individualCol = buildIndividualCollection(tables[0])
-familyCol = buildFamilyCollection(tables[1], individualCol)
+def makePrettyTable(individualCol, familyCol):
+    prettyIndividualTable = PrettyTable(['ID', 'Name', 'Gender', 'Birthday', 'Age', 'Alive', 'Death', 'Child', 'Spouse'])
+    prettyFamilyTable = PrettyTable(['ID', 'Married', 'Divorced', 'Husband ID', 'Husband Name', 'Wife ID', 'Wife Name', 'Children'])
 
-prettyIndividualTable = PrettyTable(['ID', 'Name', 'Gender', 'Birthday', 'Age', 'Alive', 'Death', 'Child', 'Spouse'])
-prettyFamilyTable = PrettyTable(['ID', 'Married', 'Divorced', 'Husband ID', 'Husband Name', 'Wife ID', 'Wife Name', 'Children'])
+    for i in individualCol:
+        prettyIndividualTable.add_row([i['ID'], i['Name'], i['Gender'], i['Birthday'], i['Age'], i['Alive'], i['Death'], i['Child'], i['Spouse']])
 
-for i in individualCol:
-    prettyIndividualTable.add_row([i['ID'], i['Name'], i['Gender'], i['Birthday'], i['Age'], i['Alive'], i['Death'], i['Child'], i['Spouse']])
+    for f in familyCol:
+        prettyFamilyTable.add_row([f['ID'], f['Married'], f['Divorced'], f['Husband ID'], f['Husband Name'], f['Wife ID'], f['Wife Name'], f['Children']])
 
-for f in familyCol:
-    prettyFamilyTable.add_row([f['ID'], f['Married'], f['Divorced'], f['Husband ID'], f['Husband Name'], f['Wife ID'], f['Wife Name'], f['Children']])
+    return [prettyIndividualTable, prettyFamilyTable]
 
-command = input('\nWhat would you like to do? Type \"help\" for a list of commands\n')
-print('\n')
+def startApp(prettyGedcomTable):
+    prettyIndividualTable = prettyGedcomTable[0]
+    prettyFamilyTable = prettyGedcomTable[1]
 
-while command != 'exit':
-    if command == 'help':
-        print('----------------------Commands----------------------')
-        print('individuals: print the table of individuals from the GEDCOM file.')
-        print('families: print the table of families from the GEDCOM file.')
-        print('exit: exit the program')
-        print('help: print this help message\n')
-        command = input('What would you like to do?\n')
-        print('\n')
-    elif command == 'individuals':
-        print('Individual Table')
-        print(prettyIndividualTable)
-        command = input('What would you like to do?\n')
-        print('\n')
-    elif command == 'families':
-        print(prettyFamilyTable)
-        command = input('What would you like to do?\n')
-        print('\n')
-    elif command == 'exit':
-        print('Goodbye!\n')
-    else:
-        print('Command \"%s\" not found. Type \"help\" for a list of commands.' % command)
-        command = input('What would you like to do?\n')
+    command = input('\nWhat would you like to do? Type \"help\" for a list of commands\n')
+    print('\n')
+
+    while command != 'exit':
+        if command == 'help':
+            print('----------------------Commands----------------------')
+            print('individuals: print the table of individuals from the GEDCOM file.')
+            print('families: print the table of families from the GEDCOM file.')
+            print('exit: exit the program')
+            print('help: print this help message\n')
+            command = input('What would you like to do?\n')
+            print('\n')
+        elif command == 'individuals':
+            print('----------------------Individuals----------------------')
+            print(prettyIndividualTable)
+            command = input('What would you like to do?\n')
+            print('\n')
+        elif command == 'families':
+            print('----------------------Families----------------------')
+            print(prettyFamilyTable)
+            command = input('What would you like to do?\n')
+            print('\n')
+        elif command == 'exit':
+            print('\n')
+        else:
+            print('Command \"%s\" not found. Type \"help\" for a list of commands.' % command)
+            command = input('What would you like to do?\n')
+
+    print('Goodbye!\n')

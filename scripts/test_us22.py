@@ -1,5 +1,5 @@
 import unittest
-import parse_gedcom as ged
+import gedcom
 
 def getIDs(collection):
     ids = []
@@ -21,14 +21,14 @@ def idUnique(ids):
     else:
         return False
 
-gedcomFile = open('test.ged', 'r')
-tables = ged.parseFile(ged.validateFile(gedcomFile))
-indiCol = ged.buildIndividualCollection(tables[0])
-famCol = ged.buildFamilyCollection(tables[1], indiCol)
+gedcomFile = open('../gedcom_files/us22.ged', 'r')
+collections = gedcom.parseFile(gedcom.validateFile(gedcomFile))
+indiCol = gedcom.buildIndividualCollection(collections)
+famCol = gedcom.buildFamilyCollection(collections)
 indiIDs = getIDs(indiCol)
 famIDs = getIDs(famCol)
 
-class uniqueIdTest(unittest.TestCase):
+class TestUniqueIds(unittest.TestCase):
     def test_indiExists(self):
         self.assertTrue(idExists(indiIDs))
 
