@@ -149,13 +149,8 @@ def buildIndividualCollection(gedcomCollection):
         newIndividual['Spouse'] = individual['FAMS']
         
         birthday = datetime.datetime.strptime(individual['BIRT'], '%d %b %Y')
-
-        if birthday <= datetime.datetime.now():
-            newIndividual['Birthday'] = birthday.strftime('%Y-%m-%d')
-        else:
-            newIndividual['Birthday'] = None
-            print('US01 Error: Date is after current date')
-
+        newIndividual['Birthday'] = birthday.strftime('%Y-%m-%d')
+        
         date = datetime.date.today()
 
         if individual['DEAT'] == None:
@@ -245,7 +240,7 @@ def startApp(prettyGedcomTable):
     print('Goodbye!\n')
 
 def individualError(us, ID, msg):
-    print('ERROR: INDIVIDUAL: %s: %s: %s' % us, ID, msg)
+    print('ERROR: INDIVIDUAL: %s: %s: %s' % (us, ID, msg))
 
 
 def familyError(us, ID, msg):
