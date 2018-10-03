@@ -1,45 +1,20 @@
 import unittest
 import gedcom
-
-def getIDs(collection):
-    ids = []
-    for c in collection:
-        ids.append(c['ID'])
-
-    return ids
-
-def idExists(ids):
-    for i in ids:
-        if i == None:
-            return False
-    
-    return True
-
-def idUnique(ids):
-    if len(ids) == len(set(ids)):
-        return True
-    else:
-        return False
+import us22
 
 gedcomFile = open('../gedcom_files/us22.ged', 'r')
 collections = gedcom.parseFile(gedcom.validateFile(gedcomFile))
 indiCol = gedcom.buildIndividualCollection(collections)
 famCol = gedcom.buildFamilyCollection(collections)
-indiIDs = getIDs(indiCol)
-famIDs = getIDs(famCol)
 
 class TestUniqueIds(unittest.TestCase):
-    def test_indiExists(self):
-        self.assertTrue(idExists(indiIDs))
+    def test_nonUniqueIndividuals(self):
+        nonUniqueIds = ['us22_iid2']
+        self.assertEqual(us22.getNonUniqueIds(indiCol, 'individual'), nonUniqueIds)
 
-    def test_famExists(self):
-        self.assertTrue(idExists(famIDs))
-
-    def test_indiUnique(self):
-        self.assertTrue(idUnique(indiIDs))
-
-    def test_famUnique(self):
-        self.assertTrue(idUnique(famIDs))
+    def test_nonUniqueFamilies(self):
+        nonUniqueIds = ['us22_fid1']
+        self.assertEqual(us22.getNonUniqueIds(famCol, 'family'), nonUniqueIds)
 
 if __name__ == '__main__':
     unittest.main()

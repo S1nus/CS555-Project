@@ -21,6 +21,13 @@
 2 DATE 23 SEP 1960
 1 SEX F
 1 FAMS us22_fid1
+0 NOTE define Jennifer Smith
+0 us22_iid2 INDI
+1 NAME Jennifer /Smith/
+1 BIRT
+2 DATE 23 SEP 1960
+1 SEX F
+1 FAMS us22_fid1
 0 us22_iid3 INDI
 1 NAME Dick /Smith/
 1 BIRT
