@@ -2,11 +2,11 @@
 0 us01_iid1 INDI
 1 NAME Joe /Smith/
 1 BIRT
-2 DATE 1 JAN 3000
+2 DATE 1 Jan 1960
 1 SEX M
 1 FAMS us01_fid1
 1 DEAT
-2 DATE 31 DEC 2013
+2 DATE 1 DEC 3000
 0 NOTE define Jennifer Smith
 0 us01_iid2 INDI
 1 NAME Jennifer /Smith/
@@ -17,7 +17,7 @@
 0 us01_iid3 INDI
 1 NAME Dick /Smith/
 1 BIRT
-2 DATE 13 FEB 1981
+2 DATE 13 FEB 6666
 1 SEX M
 1 FAMC us01_fid1
 0 us01_iid4 INDI
