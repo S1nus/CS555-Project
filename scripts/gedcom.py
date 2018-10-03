@@ -244,4 +244,4 @@ def individualError(us, ID, msg):
 
 
 def familyError(us, ID, msg):
-    print('ERROR: FAMILY: %s: %s: %s' % us, ID, msg)
+    print('ERROR: FAMILY: %s: %s: %s' % (us, ID, msg))
