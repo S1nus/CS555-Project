@@ -138,37 +138,36 @@ def parseFile(validatedFile):
 def buildIndividualCollection(gedcomCollection):
     individualTable = gedcomCollection[0]
     individualCol = []
-    indiList = []
 
     for individual in individualTable:
-        if individual['INDI'] in indiList:
-            print('Error: an individual with ID %s already exists. Skipping individuals addition to collection.' % individual['INDI'])
-        elif individual['INDI'] == None:
-            print('Error: No ID')
-        else:
-            newIndividual = {'ID': None, 'Name': None, 'Gender': None, 'Birthday': None, 'Age': None, 'Alive': None, 'Death': None, 'Child': None, 'Spouse': []}
+        newIndividual = {'ID': None, 'Name': None, 'Gender': None, 'Birthday': None, 'Age': None, 'Alive': None, 'Death': None, 'Child': None, 'Spouse': []}
         
-            newIndividual['ID'] = individual['INDI']
-            newIndividual['Name'] = individual['NAME']
-            newIndividual['Gender'] = individual['SEX']
-            newIndividual['Child'] = individual['FAMC']
-            newIndividual['Spouse'] = individual['FAMS']
+        newIndividual['ID'] = individual['INDI']
+        newIndividual['Name'] = individual['NAME']
+        newIndividual['Gender'] = individual['SEX']
+        newIndividual['Child'] = individual['FAMC']
+        newIndividual['Spouse'] = individual['FAMS']
         
-            birthday = datetime.datetime.strptime(individual['BIRT'], '%d %b %Y')
-            newIndividual['Birthday'] = birthday.strftime('%Y-%m-%d')
-            date = datetime.date.today()
+        birthday = datetime.datetime.strptime(individual['BIRT'], '%d %b %Y')
 
-            if individual['DEAT'] == None:
-                newIndividual['Alive'] = 'True'
-            else:
-                newIndividual['Alive'] = 'False'
-                date = datetime.datetime.strptime(individual['DEAT'], '%d %b %Y')
-                newIndividual['Death'] = date.strftime('%Y-%m-%d')
+        if birthday <= datetime.datetime.now():
+            newIndividual['Birthday'] = birthday.strftime('%Y-%m-%d')
+        else:
+            newIndividual['Birthday'] = None
+            print('US01 Error: Date is after current date')
+
+        date = datetime.date.today()
+
+        if individual['DEAT'] == None:
+            newIndividual['Alive'] = 'True'
+        else:
+            newIndividual['Alive'] = 'False'
+            date = datetime.datetime.strptime(individual['DEAT'], '%d %b %Y')
+            newIndividual['Death'] = date.strftime('%Y-%m-%d')
         
-            newIndividual['Age'] = date.year - birthday.year - ((date.month, date.day) < (birthday.month, birthday.day))
+        newIndividual['Age'] = date.year - birthday.year - ((date.month, date.day) < (birthday.month, birthday.day))
         
-            individualCol.append(newIndividual)
-            indiList.append(newIndividual['ID'])
+        individualCol.append(newIndividual)
 
     return individualCol
 
@@ -176,33 +175,26 @@ def buildFamilyCollection(gedcomCollection):
     individualCol = gedcomCollection[0]
     familyTable = gedcomCollection[1]
     familyCol = []
-    famList = []
 
     for family in familyTable:
-        if family['FAM'] in famList:
-            print('Error: a family  with ID %s already exists. Skipping family addition to collection.' % family['FAM'])
-        elif family['FAM'] == None:
-            print('Error: no ID')
-        else:
-            newFamily = {'ID': None, 'Married': None, 'Divorced': None, 'Husband ID': None, 'Husband Name': None, 'Wife ID': None, 'Wife Name': None, 'Children': []}
+        newFamily = {'ID': None, 'Married': None, 'Divorced': None, 'Husband ID': None, 'Husband Name': None, 'Wife ID': None, 'Wife Name': None, 'Children': []}
 
-            newFamily['ID'] = family['FAM']
-            newFamily['Married'] = datetime.datetime.strptime(family['MARR'], '%d %b %Y').strftime('%Y-%m-%d')
-            if family['DIV']:
-                newFamily['Divorced'] = datetime.datetime.strptime(family['DIV'], '%d %b %Y').strftime('%Y-%m-%d')
+        newFamily['ID'] = family['FAM']
+        newFamily['Married'] = datetime.datetime.strptime(family['MARR'], '%d %b %Y').strftime('%Y-%m-%d')
+        if family['DIV']:
+            newFamily['Divorced'] = datetime.datetime.strptime(family['DIV'], '%d %b %Y').strftime('%Y-%m-%d')
 
-            newFamily['Husband ID'] = family['HUSB']
-            newFamily['Wife ID'] = family['WIFE']
-            newFamily['Children'] = family['CHIL']
+        newFamily['Husband ID'] = family['HUSB']
+        newFamily['Wife ID'] = family['WIFE']
+        newFamily['Children'] = family['CHIL']
 
-            for individual in individualCol:
-                if individual['INDI'] == family['HUSB']:
-                    newFamily['Husband Name'] = individual['NAME']
-                if individual['INDI'] == family['WIFE']:
-                    newFamily['Wife Name'] = individual['NAME']
+        for individual in individualCol:
+            if individual['INDI'] == family['HUSB']:
+                newFamily['Husband Name'] = individual['NAME']
+            if individual['INDI'] == family['WIFE']:
+                newFamily['Wife Name'] = individual['NAME']
         
-            familyCol.append(newFamily)
-            famList.append(newFamily['ID'])
+        familyCol.append(newFamily)
     
     return familyCol
 
@@ -251,3 +243,10 @@ def startApp(prettyGedcomTable):
             command = input('What would you like to do?\n')
 
     print('Goodbye!\n')
+
+def individualError(us, ID, msg):
+    print('ERROR: INDIVIDUAL: %s: %s: %s' % us, ID, msg)
+
+
+def familyError(us, ID, msg):
+    print('ERROR: FAMILY: %s: %s: %s' % us, ID, msg)

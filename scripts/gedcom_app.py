@@ -1,6 +1,10 @@
 import gedcom
 
-gedcomFile = gedcom.readFile()
+try:
+    gedcomFile = gedcom.readFile()
+except KeyboardInterrupt:
+    print('\nGoodbye!\n')
+
 validatedFile = gedcom.validateFile(gedcomFile)
 
 gedcomCollection = gedcom.parseFile(validatedFile)
@@ -9,4 +13,7 @@ familyCollection = gedcom.buildFamilyCollection(gedcomCollection)
 
 prettyGedcomTable = gedcom.makePrettyTable(individualCollection, familyCollection)
 
-gedcom.startApp(prettyGedcomTable)
+try:
+    gedcom.startApp(prettyGedcomTable)
+except KeyboardInterrupt:
+    print('\nGoodbye!\n')
