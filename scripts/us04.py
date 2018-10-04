@@ -1,17 +1,21 @@
-import unittest
 from datetime import datetime
 import gedcom
 
-def getDate (tag, entry):
-	return datetime.strptime(entry[tag],"%Y-%m-%d")
+def getDate(tag, entry):
+    if entry[tag] != None:
+        return datetime.strptime(entry[tag], '%Y-%m-%d')
+    else:
+        return None
 
-def MarriedbeforeDivorced (familyCollection):
-	WrongFamList= []
-	for family in familyCollection:
-		if getDate("Married", family) == None or getDate("Divorced", family) == None:
-			WrongFamList.append(family["ID"])
-		elif getDate("Married", family ) > getDate("Divorced", family):
-			WrongFamList.append(family["ID"])	
-	return WrongFamList
+def marriedBeforeDivorced(familyCollection):
+    wrongFamList = []
+    
+    for family in familyCollection:
+        if getDate('Married', family) == None and getDate('Divorced', family) != None:
+            wrongFamList.append(family['ID'])
+            gedcom.familyError('US04', family['ID'], ('Divorced %s without ever being married' % family['Divorced']))
+        elif getDate('Married', family) != None and getDate('Divorced', family) != None and getDate('Married', family ) > getDate('Divorced', family):
+            wrongFamList.append(family['ID'])
+            gedcom.familyError('US04', family['ID'], ('Divorced %s before marriage %s' % (family['Divorced'], family['Married'])))
 
-
+    return wrongFamList

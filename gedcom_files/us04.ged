@@ -2,7 +2,7 @@
 0 us04_iid1 INDI
 1 NAME Joe /Smith/
 1 BIRT
-2 DATE 15 JUL 1800
+2 DATE 15 JUL 1960
 1 SEX M
 1 FAMS us04_fid1
 1 DEAT
@@ -19,13 +19,27 @@
 1 BIRT
 2 DATE 13 FEB 1981
 1 SEX M
+1 FAMS us04_fid2
 1 FAMC us04_fid1
 0 us04_iid4 INDI
-1 NAME Jane /Smith/
+1 NAME Jane /Vincent/
 1 BIRT
 2 DATE 2 JUN 1983
 1 SEX F
+1 FAMS us04_fid3
 1 FAMC us04_fid1
+0 us04_iid5 INDI
+1 NAME Shmlangela /Smith/
+1 BIRT
+2 DATE 19 SEP 1982
+1 SEX F
+1 FAMS us04_fid2
+0 us04_iid6 INDI
+1 NAME Quadrant /Vincent/
+1 BIRT
+2 DATE 2 JAN 1983
+1 SEX M
+1 FAMS us04_fid3
 0 us04_fid1 FAM
 1 MARR
 2 DATE 14 FEB 1980
@@ -35,3 +49,13 @@
 1 WIFE us04_iid2
 1 CHIL us04_iid3
 1 CHIL us04_iid4
+0 us04_fid2 FAM
+1 DIV
+2 DATE 13 FEB 2000 
+1 HUSB us04_iid3
+1 WIFE us04_iid5
+0 us04_fid3 FAM
+1 MARR
+2 DATE 14 FEB 1990
+1 HUSB us04_iid6
+1 WIFE us04_iid4
