@@ -23,9 +23,9 @@ def readFile():
 
     while gedcomFile == None:
         try:
-            gedcomFile = open(gedcomFileName, 'r')
+            gedcomFile = open('../gedcom_files/%s' % gedcomFileName, 'r')
         except FileNotFoundError:
-            gedcomFileName = input('File \"%s\" not found. Please re-enter the name of your GEDCOM file:\n' % gedcomFileName)
+            gedcomFileName = input('File \"%s\" not found in gedcom_files folder. Please re-enter the name of your GEDCOM file:\n' % gedcomFileName)
 
     return gedcomFile
 
