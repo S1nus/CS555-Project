@@ -4,6 +4,7 @@ import us02
 import us03
 import us04
 import us07
+import us08
 import us21
 import us22
 import us29
@@ -28,6 +29,7 @@ us02.birthBeforeMarriage(familyCollection, individualCollection)
 us03.getdb4b(individualCollection)
 us04.marriedBeforeDivorced(familyCollection)
 us07.getAgesOver150(individualCollection)
+us08.birthsBeforeAndAfterMarriage(individualCollection, familyCollection)
 us21.getHusbandGender(individualCollection, familyCollection)
 us21.getWifeGender(individualCollection, familyCollection)
 us22.getNonUniqueIds(individualCollection, 'individual')
