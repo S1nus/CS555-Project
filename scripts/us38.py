@@ -23,4 +23,5 @@ def upcomingBdays(people):
         daysUntil = daysUntilBday(month, day)
         if daysUntil <= 30:
             results.append(person['ID'])
+            print('NOTICE: INDIVIDUAL: US38: %s: Has a birthday in %s days!' % (person['ID'], daysUntil))
     return results

@@ -7,8 +7,8 @@ collections = gedcom.parseFile(gedcom.validateFile(gedcomFile))
 indiCol = gedcom.buildIndividualCollection(collections)
 famCol = gedcom.buildFamilyCollection(collections)
 
-class TestDeadPeople(unittest.TestCase):
-    def test_onedeadperson(self):
+class TestUpcomingBirthdays(unittest.TestCase):
+    def test_upcomingBirthdays(self):
         self.assertEqual(len(us38.upcomingBdays(indiCol)), 1)
 
 if __name__ == '__main__':
