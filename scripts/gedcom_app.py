@@ -1,5 +1,6 @@
 import gedcom
 import us01
+import us02
 import us04
 import us07
 import us09
@@ -21,6 +22,7 @@ prettyGedcomTable = gedcom.makePrettyTable(individualCollection, familyCollectio
 
 us01.getFutureDates(individualCollection, 'individuals')
 us01.getFutureDates(familyCollection, 'families')
+us02.birthBeforeMarriage(familyCollection, individualCollection)
 us04.marriedBeforeDivorced(familyCollection)
 us07.getAgesOver150(individualCollection)
 us09.getdb4b(individualCollection)
