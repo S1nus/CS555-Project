@@ -19,8 +19,8 @@ familyCollection = gedcom.buildFamilyCollection(gedcomCollection)
 
 prettyGedcomTable = gedcom.makePrettyTable(individualCollection, familyCollection)
 
-us01.getFutureDates(individualCollection, 'individuals')
-us01.getFutureDates(familyCollection, 'families')
+us01.getFutureDates(individualCollection)
+us01.getFutureDates(familyCollection)
 us04.marriedBeforeDivorced(familyCollection)
 us07.getAgesOver150(individualCollection)
 us09.getdb4b(individualCollection)
