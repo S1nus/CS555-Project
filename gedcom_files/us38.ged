@@ -1,0 +1,35 @@
+0 NOTE one generation of an imaginary family
+0 us38_iid1 INDI
+1 NAME Joe /Smith/
+1 BIRT
+2 DATE 15 JUL 1960
+1 SEX M
+1 FAMS us39_fid1
+1 DEAT
+2 DATE 31 DEC 2013
+0 NOTE define Jennifer Smith
+0 us38_iid2 INDI
+1 NAME Jennifer /Smith/
+1 BIRT
+2 DATE 23 SEP 1960
+1 SEX F
+1 FAMS us38_fid1
+0 us38_iid3 INDI
+1 NAME Dick /Smith/
+1 BIRT
+2 DATE 13 FEB 1981
+1 SEX M
+1 FAMC us38_fid1
+0 us38_iid4 INDI
+1 NAME Jane /Smith/
+1 BIRT
+2 DATE 2 JUN 1983
+1 SEX F
+1 FAMC us38_fid1
+0 us38_fid1 FAM
+1 MARR
+2 DATE 20 OCT 1980
+1 HUSB us38_iid1
+1 WIFE us38_iid2
+1 CHIL us38_iid3
+1 CHIL us38_iid4
