@@ -7,6 +7,7 @@ use std::io::BufRead;
 use std::io::BufWriter;
 use std::io::Write;
 use std::io;
+use std::str;
 
 fn main() {
 
@@ -17,14 +18,22 @@ fn main() {
         Err(why) => panic!("couldn't open {}: {}", display, why.description()), 
         Ok(file) => file,
     };
+
     let file = BufReader::new(&f);
     let mut writer = BufWriter::new(io::stdout());
 
     for (num, line) in file.lines().enumerate() {
         let l = line.unwrap();
-        writer.write((&l[1..]).as_bytes()).unwrap();
-        writer.write(b"\n").unwrap();
+
+        let vec: Vec<&str> = l.split(" ").collect();
+
+        //for element in vec.iter() {
+        //}
+
+        println!("--> {}", l);
+
+        print!("<--");
+
     }
 
 }
-
