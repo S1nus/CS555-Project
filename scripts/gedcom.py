@@ -162,9 +162,9 @@ def buildIndividualCollection(gedcomCollection):
         date = datetime.date.today()
 
         if individual['DEAT'] == None:
-            newIndividual['Alive'] = 'True'
+            newIndividual['Alive'] = True
         else:
-            newIndividual['Alive'] = 'False'
+            newIndividual['Alive'] = False
             date = datetime.datetime.strptime(individual['DEAT'], '%d %b %Y')
             newIndividual['Death'] = date.strftime('%Y-%m-%d')
         
