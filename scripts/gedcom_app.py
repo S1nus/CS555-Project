@@ -1,11 +1,14 @@
 import gedcom
 import us01
 import us02
+import us03
 import us04
 import us07
-import us09
+import us08
 import us21
 import us22
+import us29
+import us38
 
 try:
     gedcomFile = gedcom.readFile()
@@ -20,16 +23,19 @@ familyCollection = gedcom.buildFamilyCollection(gedcomCollection)
 
 prettyGedcomTable = gedcom.makePrettyTable(individualCollection, familyCollection)
 
-us01.getFutureDates(individualCollection, 'individuals')
-us01.getFutureDates(familyCollection, 'families')
+us01.getFutureDates(individualCollection)
+us01.getFutureDates(familyCollection)
 us02.birthBeforeMarriage(familyCollection, individualCollection)
+us03.getdb4b(individualCollection)
 us04.marriedBeforeDivorced(familyCollection)
 us07.getAgesOver150(individualCollection)
-us09.getdb4b(individualCollection)
+us08.birthsBeforeAndAfterMarriage(individualCollection, familyCollection)
 us21.getHusbandGender(individualCollection, familyCollection)
 us21.getWifeGender(individualCollection, familyCollection)
 us22.getNonUniqueIds(individualCollection, 'individual')
 us22.getNonUniqueIds(familyCollection, 'family')
+us29.getDead(individualCollection)
+us38.upcomingBdays(individualCollection)
 
 try:
     gedcom.startApp(prettyGedcomTable)

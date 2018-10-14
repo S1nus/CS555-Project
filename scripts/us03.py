@@ -12,5 +12,5 @@ def getdb4b(collection):
                 db4b.append(person['ID'])
 
     if not len(db4b) == 0:
-        gedcom.individualError('US09', person['ID'], "This person's death is before their birth...")
+        gedcom.individualError('US03', person['ID'], "This person's death is before their birth...")
     return db4b

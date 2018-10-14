@@ -10,11 +10,11 @@ famCol = gedcom.buildFamilyCollection(collections)
 class TestFutureDates(unittest.TestCase):
     def test_individualFutureDates(self):
         futureDates = [['us01_iid1', 'Death'], ['us01_iid3', 'Birthday']]
-        self.assertEqual(us01.getFutureDates(indiCol, 'individuals'), futureDates)
+        self.assertEqual(us01.getFutureDates(indiCol), futureDates)
 
     def test_familyFutureDates(self):
         futureDates = [['us01_fid1', 'Married']]
-        self.assertEqual(us01.getFutureDates(famCol, 'families'), futureDates)
+        self.assertEqual(us01.getFutureDates(famCol), futureDates)
 
 if __name__ == '__main__':
     unittest.main()
