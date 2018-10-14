@@ -3,6 +3,8 @@ import us01
 import us02
 import us03
 import us04
+import us05
+import us06
 import us07
 import us08
 import us21
@@ -29,6 +31,8 @@ us01.getFutureDates(familyCollection)
 us02.birthBeforeMarriage(familyCollection, individualCollection)
 us03.getdb4b(individualCollection)
 us04.marriedBeforeDivorced(familyCollection)
+us05.getDb4M(individualCollection, familyCollection)
+us06.getDivb4D(individualCollection, familyCollection)
 us07.getAgesOver150(individualCollection)
 us08.birthsBeforeAndAfterMarriage(individualCollection, familyCollection)
 us21.getHusbandGender(individualCollection, familyCollection)
