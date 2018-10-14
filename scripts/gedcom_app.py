@@ -8,6 +8,7 @@ import us08
 import us21
 import us22
 import us29
+import us31
 import us38
 
 try:
@@ -35,6 +36,7 @@ us21.getWifeGender(individualCollection, familyCollection)
 us22.getNonUniqueIds(individualCollection, 'individual')
 us22.getNonUniqueIds(familyCollection, 'family')
 us29.getDead(individualCollection)
+us31.getAllLivingSingle(individualCollection)
 us38.upcomingBdays(individualCollection)
 
 try:

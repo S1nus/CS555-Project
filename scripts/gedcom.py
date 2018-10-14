@@ -77,7 +77,7 @@ def parseFile(validatedFile):
     familyTable = []
     fileLength = len(validatedFile)
     lineNum = 0
-    individual = {'INDI': None, 'NAME': None, 'SEX': None, 'BIRT': None, 'DEAT': None, 'FAMC': None, 'FAMS': []}
+    individual = {'INDI': None, 'NAME': None, 'SEX': None, 'BIRT': None, 'DEAT': None, 'FAMC': [], 'FAMS': []}
     family = {'FAM': None, 'MARR': None, 'DIV': None, 'HUSB': None, 'WIFE': None, 'CHIL': []}
 
     indiList = []
@@ -127,10 +127,18 @@ def parseFile(validatedFile):
         else:
             lineNum += 1
         if individual['INDI']:
+            if individual['FAMS'] == []:
+                individual['FAMS'] = None
+            if individual['FAMC'] == []:
+                individual['FAMC'] = None
+
             individualTable.append(individual)
             individual = {'INDI': None, 'NAME': None, 'SEX': None, 'BIRT': None, 'DEAT': None, 'FAMC': [], 'FAMS': []}
 
         if family['FAM']:
+            if family['CHIL'] == []:
+                family['CHIL'] = None
+
             familyTable.append(family)
             family = {'FAM': None, 'MARR': None, 'DIV': None, 'HUSB': None, 'WIFE': None, 'CHIL': []}
     return [individualTable, familyTable]
@@ -140,7 +148,7 @@ def buildIndividualCollection(gedcomCollection):
     individualCol = []
 
     for individual in individualTable:
-        newIndividual = {'ID': None, 'Name': None, 'Gender': None, 'Birthday': None, 'Age': None, 'Alive': None, 'Death': None, 'Child': None, 'Spouse': []}
+        newIndividual = {'ID': None, 'Name': None, 'Gender': None, 'Birthday': None, 'Age': None, 'Alive': None, 'Death': None, 'Child': None, 'Spouse': None}
         
         newIndividual['ID'] = individual['INDI']
         newIndividual['Name'] = individual['NAME']
@@ -172,7 +180,7 @@ def buildFamilyCollection(gedcomCollection):
     familyCol = []
 
     for family in familyTable:
-        newFamily = {'ID': None, 'Married': None, 'Divorced': None, 'Husband ID': None, 'Husband Name': None, 'Wife ID': None, 'Wife Name': None, 'Children': []}
+        newFamily = {'ID': None, 'Married': None, 'Divorced': None, 'Husband ID': None, 'Husband Name': None, 'Wife ID': None, 'Wife Name': None, 'Children': None}
 
         newFamily['ID'] = family['FAM']
         if family['MARR']:
@@ -244,6 +252,11 @@ def startApp(prettyGedcomTable):
 def individualError(us, ID, msg):
     print('ERROR: INDIVIDUAL: %s: %s: %s' % (us, ID, msg))
 
-
 def familyError(us, ID, msg):
     print('ERROR: FAMILY: %s: %s: %s' % (us, ID, msg))
+
+def individualInfo(us, ID, msg):
+    print('INFO: INDIVIDUAL: %s: %s: %s' % (us, ID, msg))
+
+def familyInfo(us, ID, msg):
+    print('INFO: FAMILY: %s: %s: %s' % (us, ID, msg))
