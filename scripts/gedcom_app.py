@@ -8,6 +8,7 @@ import us06
 import us07
 import us08
 import us11
+import us18
 import us21
 import us22
 import us29
@@ -37,6 +38,7 @@ us06.getDivb4D(individualCollection, familyCollection)
 us07.getAgesOver150(individualCollection)
 us08.birthsBeforeAndAfterMarriage(individualCollection, familyCollection)
 us11.getBigamousIndividuals(individualCollection, familyCollection)
+us18.noSiblingsMarried(familyCollection, individualCollection)
 us21.getHusbandGender(individualCollection, familyCollection)
 us21.getWifeGender(individualCollection, familyCollection)
 us22.getNonUniqueIds(individualCollection, 'individual')
