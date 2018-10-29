@@ -156,8 +156,14 @@ def buildIndividualCollection(gedcomCollection):
         newIndividual['Child'] = individual['FAMC']
         newIndividual['Spouse'] = individual['FAMS']
         
-        birthday = datetime.datetime.strptime(individual['BIRT'], '%d %b %Y')
-        newIndividual['Birthday'] = birthday.strftime('%Y-%m-%d')
+        try:
+            birthday = datetime.datetime.strptime(individual['BIRT'], '%d %b %Y')
+        except:
+            birthday = None
+        try:
+            newIndividual['Birthday'] = birthday.strftime('%Y-%m-%d')
+        except:
+            newIndividual['Birthday'] = None
         
         date = datetime.date.today()
 
@@ -168,7 +174,10 @@ def buildIndividualCollection(gedcomCollection):
             date = datetime.datetime.strptime(individual['DEAT'], '%d %b %Y')
             newIndividual['Death'] = date.strftime('%Y-%m-%d')
         
-        newIndividual['Age'] = date.year - birthday.year - ((date.month, date.day) < (birthday.month, birthday.day))
+        try:
+            newIndividual['Age'] = date.year - birthday.year - ((date.month, date.day) < (birthday.month, birthday.day))
+        except:
+            newIndividual['Age'] = None
         
         individualCol.append(newIndividual)
 
