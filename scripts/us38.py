@@ -2,7 +2,10 @@ import gedcom
 from datetime import datetime
 
 def getDate(tag, entry):
-    return datetime.strptime(entry[tag], '%Y-%m-%d')
+    if entry[tag]:
+        return datetime.strptime(entry[tag], '%Y-%m-%d')
+    else:
+        return None
 
 def daysUntilBday(month, day):
     now = datetime.now()
@@ -18,10 +21,12 @@ def daysUntilBday(month, day):
 def upcomingBdays(people):
     results = []
     for person in people:
-        month = getDate('Birthday', person).month
-        day = getDate('Birthday', person).day
-        daysUntil = daysUntilBday(month, day)
-        if daysUntil <= 30:
-            results.append(person['ID'])
-            print('NOTICE: INDIVIDUAL: US38: %s: Has a birthday in %s days!' % (person['ID'], daysUntil))
+        birthday = getDate('Birthday', person)
+        if birthday != None:
+            month = getDate('Birthday', person).month
+            day = getDate('Birthday', person).day
+            daysUntil = daysUntilBday(month, day)
+            if daysUntil <= 30:
+                results.append(person['ID'])
+                print('NOTICE: INDIVIDUAL: US38: %s: Has a birthday in %s days!' % (person['ID'], daysUntil))
     return results

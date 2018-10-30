@@ -26,6 +26,7 @@ def anyCousinsMarried(familyCollections, individualCollection):
     for i in familyCollections:
         if (bool(set(getParentsParents(i['Husband ID'], familyCollections, individualCollection)) & set(getParentsParents(i['Wife ID'], familyCollections, individualCollection)))):
             ret.append(i['ID'])
+            gedcom.familyError('US19', i['ID'], 'First cousins should not be married')
     return ret
 #def getCousins(familyCollections, individualCollection):
 #    for fam in familyCollections:

@@ -10,6 +10,7 @@ import us08
 import us09
 import us11
 import us18
+import us19
 import us21
 import us22
 import us29
@@ -41,6 +42,7 @@ us08.birthsBeforeAndAfterMarriage(individualCollection, familyCollection)
 us09.getBirthsAfterDeathsOfParents(individualCollection, familyCollection)
 us11.getBigamousIndividuals(individualCollection, familyCollection)
 us18.noSiblingsMarried(familyCollection, individualCollection)
+us19.anyCousinsMarried(familyCollection, individualCollection)
 us21.getHusbandGender(individualCollection, familyCollection)
 us21.getWifeGender(individualCollection, familyCollection)
 us22.getNonUniqueIds(individualCollection, 'individual')

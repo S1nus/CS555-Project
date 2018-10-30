@@ -7,7 +7,7 @@ def getAllLivingSingle(individualCollection):
         iid = individual['ID']
         isAlive = individual['Alive']
         isSingle = (individual['Spouse'] == None)
-        isOver30 = (individual['Age'] > 30)
+        isOver30 = (individual['Age'] and individual['Age'] > 30)
         
         if isAlive and isSingle and isOver30:
             livingSingle.append(iid)

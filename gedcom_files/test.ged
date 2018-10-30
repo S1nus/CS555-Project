@@ -611,7 +611,102 @@
 1 MARR
 2 DATE 14 FEB 2000
 1 HUSB us18_iid6
-1 WIFE us18_iid50 NOTE one generation of an imaginary family
+1 WIFE us18_iid5
+0 HEAD
+1 SOUR Family Echo
+2 WWW http://www.familyecho.com/
+1 FILE Family 4
+1 DATE 29 OCT 2018
+1 DEST ANSTFILE
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 SUBM us19_iid1
+2 NAME Connor O'Hara
+1 SUBN
+1 CHAR UTF-8
+0 us19_iid1 INDI
+1 NAME Cleetus /Jones/
+2 GIVN Cleetus
+2 SURN Jones
+2 _MARNM Jones
+1 SEX M
+1 FAMS us19_fid1
+1 FAMC us19_fid2
+0 us19_iid2 INDI
+1 NAME Cleetus /Jones/
+2 GIVN Cleetus
+2 SURN Jones
+2 _MARNM Jones Sr
+1 SEX M
+1 FAMS us19_fid2
+1 FAMC us19_fid3
+0 us19_iid3 INDI
+1 NAME Nora /Jones/
+2 GIVN Nora
+2 SURN Jones
+2 _MARNM Jones
+1 SEX F
+1 FAMS us19_fid2
+0 us19_iid4 INDI
+1 NAME Steve /Jones/
+2 GIVN Steve
+2 SURN Jones
+2 _MARNM Jones
+1 SEX M
+1 FAMS us19_fid3
+0 us19_iid5 INDI
+1 NAME Stacey /Jones/
+2 GIVN Stacey
+2 SURN Jones
+2 _MARNM Jones
+1 SEX F
+1 FAMS us19_fid3
+0 us19_iid6 INDI
+1 NAME Murray /Jones/
+2 GIVN Murray
+2 SURN Jones
+2 _MARNM Jones
+1 SEX M
+1 FAMS us19_fid4
+1 FAMC us19_fid3
+0 us19_iid7 INDI
+1 NAME Sarah /Jones/
+2 GIVN Sarah
+2 SURN Jones
+2 _MARNM Jones
+1 SEX F
+1 FAMS us19_fid4
+0 us19_iid8 INDI
+1 NAME Katie /Jones/
+2 GIVN Katie
+2 SURN Jones
+2 _MARNM Jones
+1 SEX F
+1 FAMS us19_fid1
+1 FAMC us19_fid4
+0 us19_fid1 FAM
+1 HUSB us19_iid1
+1 WIFE us19_iid8
+1 _CURRENT Y
+0 us19_fid2 FAM
+1 HUSB us19_iid2
+1 WIFE us19_iid3
+1 CHIL us19_iid1
+1 _CURRENT N
+0 us19_fid3 FAM
+1 HUSB us19_iid4
+1 WIFE us19_iid5
+1 CHIL us19_iid2
+1 CHIL us19_iid6
+1 _CURRENT Y
+0 us19_fid4 FAM
+1 HUSB us19_iid6
+1 WIFE us19_iid7
+1 CHIL us19_iid8
+1 _CURRENT Y
+0 TRLR
+0 NOTE one generation of an imaginary family
 0 us21_iid1 INDI
 1 NAME Joe /Smith/
 1 BIRT
@@ -785,7 +880,7 @@
 0 us38_iid2 INDI
 1 NAME Jennifer /Smith/
 1 BIRT
-2 DATE 23 OCT 1960
+2 DATE 12 NOV 1960
 1 SEX F
 1 FAMS us38_fid1
 0 us38_iid3 INDI
