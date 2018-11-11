@@ -2,6 +2,7 @@ import gedcom
 
 def getParentsParents(id, familyCollections, individualCollection):
     for family in familyCollections:
+        parents = []
         try:
             if (id in family['Children']):
                 parents = []
