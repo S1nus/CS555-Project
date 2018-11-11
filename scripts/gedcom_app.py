@@ -13,6 +13,7 @@ import us18
 import us19
 import us21
 import us22
+import us26
 import us29
 import us31
 import us38
@@ -47,6 +48,7 @@ us21.getHusbandGender(individualCollection, familyCollection)
 us21.getWifeGender(individualCollection, familyCollection)
 us22.getNonUniqueIds(individualCollection, 'individual')
 us22.getNonUniqueIds(familyCollection, 'family')
+us26.getInconsistencies(individualCollection, familyCollection)
 us29.getDead(individualCollection)
 us31.getAllLivingSingle(individualCollection)
 us38.upcomingBdays(individualCollection)
