@@ -22,7 +22,7 @@ def getIndividualMarriageAndDivorceDates(iid, families, familyCollection):
                 elif iid == family['Wife ID']:
                     spouseID = family['Husband ID']
 
-                dateTuples.append((fid, iid, spouseID, getDate('Married', family), getDate('Divorced', family)))
+                dateTuples.append((fid, iid, spouseID, getDate('Married', family), getDate('Divorced', family), family['lines']))
         dateTuples = sorted(dateTuples, key=itemgetter(3))
     else:
         dateTuples = None
@@ -55,7 +55,7 @@ def getBigamousIndividuals(individualCollection, familyCollection):
                     if marriedWhileMarried or marriedBeforeDivorce:
                         bigamousIndividuals.append((iid, prevDates[2], curDates[2]))
                         msg = 'Individual is bigamous, married to %s before divorce to %s' % (curDates[2], prevDates[2])
-                        gedcom.individualError('US11', iid, msg)
+                        gedcom.individualError('US11', iid, msg, curDates[5][curDates[0] + 'MARR'])
                     
                     curIndex = curIndex + 1
 

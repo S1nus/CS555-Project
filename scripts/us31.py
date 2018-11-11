@@ -11,6 +11,6 @@ def getAllLivingSingle(individualCollection):
         
         if isAlive and isSingle and isOver30:
             livingSingle.append(iid)
-            gedcom.individualInfo('US31', iid, 'Individual is over 30 and has never married')
+            gedcom.individualInfo('US31', iid, 'Individual is over 30 and has never married', individual['lines'][iid + 'INDI'])
     
     return livingSingle

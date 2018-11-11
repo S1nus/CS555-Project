@@ -13,9 +13,9 @@ def marriedBeforeDivorced(familyCollection):
     for family in familyCollection:
         if getDate('Married', family) == None and getDate('Divorced', family) != None:
             wrongFamList.append(family['ID'])
-            gedcom.familyError('US04', family['ID'], ('Divorced %s without ever being married' % family['Divorced']))
+            gedcom.familyError('US04', family['ID'], ('Divorced %s without ever being married' % family['Divorced']), family['lines'][family['ID'] + 'DIV'])
         elif getDate('Married', family) != None and getDate('Divorced', family) != None and getDate('Married', family ) > getDate('Divorced', family):
             wrongFamList.append(family['ID'])
-            gedcom.familyError('US04', family['ID'], ('Divorced %s before marriage %s' % (family['Divorced'], family['Married'])))
+            gedcom.familyError('US04', family['ID'], ('Divorced %s before marriage %s' % (family['Divorced'], family['Married'])), family['lines'][family['ID'] + 'DIV'])
 
     return wrongFamList

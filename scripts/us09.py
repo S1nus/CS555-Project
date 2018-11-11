@@ -23,16 +23,16 @@ def getBirthsAfterDeathsOfParents(individualCollection, familyCollection):
                 if individual['ID'] == parentIDs['dad']:
                     dadDeath = getDate('Death', individual)
 
-                if individual['ID'] in childrenIDs:
-                    childBirths.append([individual['ID'], getDate('Birthday', individual)])
+                if getDate('Birthday', individual) and individual['ID'] in childrenIDs:
+                    childBirths.append([individual['ID'], getDate('Birthday', individual), individual['lines'][individual['ID'] + 'BIRT']])
         
         for births in childBirths:
             if momDeath and births[1] and births[1] > momDeath:
-                gedcom.individualError('US09', births[0], ('Child born %s after death of mother %s' % (births[1], momDeath)))
+                gedcom.individualError('US09', births[0], ('Child born %s after death of mother %s' % (births[1], momDeath)), births[2])
                 birthsAfterDeaths.append(births[0])
 
             if dadDeath and births[1] and births[1] > dadDeath and (births[1] - dadDeath).days > 270:
-                gedcom.individualError('US09', births[0], ('Child born %s more than 9 months after death of father %s' % (births[1], dadDeath)))
+                gedcom.individualError('US09', births[0], ('Child born %s more than 9 months after death of father %s' % (births[1], dadDeath)), births[2])
                 birthsAfterDeaths.append(births[0])
     
     return birthsAfterDeaths

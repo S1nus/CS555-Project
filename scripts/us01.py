@@ -24,15 +24,15 @@ def getFutureDates(collection):
     for entry in collection:
         if getDate('Birthday', entry) > today:
             futureDates.append([entry['ID'], 'Birthday'])
-            gedcom.individualError('US01', entry['ID'], ('Birthday %s occurs in the future.' % entry['Birthday']))
+            gedcom.individualError('US01', entry['ID'], ('Birthday %s occurs in the future.' % entry['Birthday']), entry['lines'][entry['ID'] + 'BIRT'])
         if getDate('Death', entry) > today:
             futureDates.append([entry['ID'], 'Death'])
-            gedcom.individualError('US01', entry['ID'], ('Death %s occurs in the future.' % entry['Death']))
+            gedcom.individualError('US01', entry['ID'], ('Death %s occurs in the future.' % entry['Death']), entry['lines'][entry['ID'] + 'DEAT'])
         if getDate('Married', entry) > today:
             futureDates.append([entry['ID'], 'Married'])
-            gedcom.familyError('US01', entry['ID'], ('Marriage date %s occurs in the future.' % entry['Married']))
+            gedcom.familyError('US01', entry['ID'], ('Marriage date %s occurs in the future.' % entry['Married']), entry['lines'][entry['ID'] + 'MARR'])
         if getDate('Divorced', entry) > today:
             futureDates.append([entry['ID'], 'Divorced'])
-            gedcom.familyError('US01', entry['ID'], ('Divorce date %s occurs in the future.' % entry['Divorced']))
+            gedcom.familyError('US01', entry['ID'], ('Divorce date %s occurs in the future.' % entry['Divorced']), entry['lines'][entry['ID'] + 'MARR'])
     
     return futureDates

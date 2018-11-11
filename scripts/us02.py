@@ -12,6 +12,6 @@ def birthBeforeMarriage (familyCollection, individualCollection):
 			if family['Husband ID'] == spouse['ID'] or family['Wife ID'] == spouse['ID']:
 					if getDate('Married', family) and getDate('Birthday', spouse) and getDate('Married', family) < getDate('Birthday', spouse):
 						WrongFamList.append(family['ID'])
-						gedcom.familyError('US02', family['ID'], ('Birthday %s after being married' % spouse['Birthday']))
+						gedcom.familyError('US02', family['ID'], ('Birthday %s after being married' % spouse['Birthday']), spouse['lines'][spouse['ID'] + 'BIRT'])
 	return set(WrongFamList)
 

@@ -17,13 +17,13 @@ def birthsBeforeAndAfterMarriage(individualCollection, familyCollection):
                         birthday = getDate('Birthday', individual)
                         marriage = getDate('Married', family)
                         divorce = getDate('Divorced', family)
-                        if not marriage or birthday < marriage:
+                        if birthday != None and (not marriage or birthday < marriage):
                             invalidBirths.append(child)
-                            gedcom.individualError('US08', child, 'Born before parents married')
-                        elif marriage and divorce and birthday > divorce:
+                            gedcom.individualError('US08', child, 'Born before parents married', individual['lines'][individual['ID'] + 'BIRT'])
+                        elif birthday != None and (marriage and divorce and birthday > divorce):
                             delta = birthday - divorce
                             if delta.days > 270:
                                 invalidBirths.append(child)
-                                gedcom.individualError('US08', child, 'Born more than 9 months after parents divorce')
+                                gedcom.individualError('US08', child, 'Born more than 9 months after parents divorce', individual['lines'][individual['ID'] + 'BIRT'])
 
     return invalidBirths

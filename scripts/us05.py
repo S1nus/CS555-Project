@@ -18,5 +18,5 @@ def getDb4M(people, fams):
                 if not indi['Alive']:
                     if (getDate('Death', indi) and getDate('Death', indi) < marriageDate):
                         results.append(indi['ID'])
-                        gedcom.individualError('US05', indi['ID'], 'Individual died before marriage to spouse')
+                        gedcom.individualError('US05', indi['ID'], 'Individual died before marriage to spouse', indi['lines'][indi['ID'] + 'DEAT'])
     return results

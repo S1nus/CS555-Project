@@ -10,7 +10,6 @@ def getdb4b(collection):
         if not person['Death'] == None:
             if  getDate('Death', person) < getDate('Birthday', person):
                 db4b.append(person['ID'])
+                gedcom.individualError('US03', person['ID'], "This person's death is before their birth...", person['lines'][person['ID'] + 'DEAT'])
 
-    if not len(db4b) == 0:
-        gedcom.individualError('US03', person['ID'], "This person's death is before their birth...")
     return db4b

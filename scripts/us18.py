@@ -12,5 +12,5 @@ def noSiblingsMarried(familyCollection,individualCollection):
         if Husband != None and Wife != None and Husband["Child"] == Wife["Child"]:
             if (Husband["Child"] != None and Wife["Child"] != None):
                 WrongFamList.append(Husband["Child"])
-                gedcom.familyError('US18', family['ID'], ('Husband and Wife are siblings in family: %s' % Husband['Child']))
+                gedcom.familyError('US18', family['ID'], ('Husband and Wife are siblings in family: %s' % Husband['Child']), family['lines'][family['ID'] + 'FAM'])
     return WrongFamList

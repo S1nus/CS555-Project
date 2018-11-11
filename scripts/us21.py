@@ -10,7 +10,7 @@ def getHusbandGender(individualCollection, familyCollection):
             if i['ID'] == husbandID:
                 if i['Gender'] != 'M':
                     reversedGenders.append(husbandID)
-                    gedcom.familyError('US21', f['ID'], ('Husband (%s) gender should be M' % husbandID))
+                    gedcom.familyError('US21', f['ID'], ('Husband (%s) gender should be M' % husbandID), i['lines'][husbandID + 'SEX'])
 
     return reversedGenders
 
@@ -24,6 +24,6 @@ def getWifeGender(individualCollection, familyCollection):
             if i['ID'] == wifeID:
                 if i['Gender'] != 'F':
                     reversedGenders.append(wifeID)
-                    gedcom.familyError('US21', f['ID'], ('Wife (%s) should be F' % wifeID))
+                    gedcom.familyError('US21', f['ID'], ('Wife (%s) should be F' % wifeID), i['lines'][wifeID + 'SEX'])
 
     return reversedGenders

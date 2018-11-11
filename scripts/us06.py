@@ -16,7 +16,7 @@ def getDivb4D(people, fams):
                     if (not indi['Death'] == None):
                         if (getDate('Death', indi) < divorceDate):
                             results.append(fam['ID'])
-                            gedcom.familyError('US06', fam['ID'], 'Divorce occurs after death of both spouses')
+                            gedcom.familyError('US06', fam['ID'], 'Divorce occurs after death of both spouses', fam['lines'][fam['ID'] + 'DIV'])
     return results
 
 #def getDead(people):

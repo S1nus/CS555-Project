@@ -31,8 +31,10 @@ def readFile():
 
 def validateFile(gedcomFile):
     validatedFile = []
-    
+    lineNum = 0
+
     for rawLine in gedcomFile:
+        lineNum += 1
         line = rawLine.strip().split(' ', 2)
         validatedLine = None
         
@@ -62,13 +64,13 @@ def validateFile(gedcomFile):
                         validatedLine = [level, tag, arguments]
                 
                 if validatedLine:
-                    validatedFile.append(validatedLine)
+                    validatedFile.append((validatedLine, lineNum))
                 else:
-                    print('Invalid: %s' % rawLine.strip())
+                    print('%s:Invalid: %s' % (lineNum, rawLine.strip()))
             except ValueError:
-                print('Invalid: %s' % rawLine.strip())
+                print('%s:Invalid: %s' % (lineNum, rawLine.strip()))
         else:
-            print('Invalid: %s' % rawLine.strip())
+            print('%s:Invalid: %s' % (lineNum, rawLine.strip()))
     
     return validatedFile
 
@@ -77,53 +79,70 @@ def parseFile(validatedFile):
     familyTable = []
     fileLength = len(validatedFile)
     lineNum = 0
-    individual = {'INDI': None, 'NAME': None, 'SEX': None, 'BIRT': None, 'DEAT': None, 'FAMC': [], 'FAMS': []}
-    family = {'FAM': None, 'MARR': None, 'DIV': None, 'HUSB': None, 'WIFE': None, 'CHIL': []}
+    individual = {'INDI': None, 'NAME': None, 'SEX': None, 'BIRT': None, 'DEAT': None, 'FAMC': [], 'FAMS': [], 'lines': {}}
+    family = {'FAM': None, 'MARR': None, 'DIV': None, 'HUSB': None, 'WIFE': None, 'CHIL': [], 'lines': {}}
 
     indiList = []
     famList = []
 
     while lineNum < fileLength:
-        line = validatedFile[lineNum]
+        lineNumDict = {}
+        line = validatedFile[lineNum][0]
+        fileLineNum = validatedFile[lineNum][1]
         if line[TAG] == 'INDI':
             individual['INDI'] = line[ARG]
+            individual['lines'][individual['INDI'] + line[TAG]] = fileLineNum
             nextLineNum = lineNum + 1
-            nextLine = validatedFile[nextLineNum]
+            nextLine = validatedFile[nextLineNum][0]
+            nextFileLineNum = validatedFile[nextLineNum][1]
             while nextLineNum < fileLength and nextLine[TAG] != 'INDI' and nextLine[TAG] != 'FAM':
                 if nextLine[TAG] == 'BIRT' or nextLine[TAG] == 'DEAT':
                     nextLineNum += 1
-                    individual[nextLine[TAG]] = validatedFile[nextLineNum][ARG]
+                    nextFileLineNum = validatedFile[nextLineNum][1]
+                    individual[nextLine[TAG]] = validatedFile[nextLineNum][0][ARG]
+                    individual['lines'][individual['INDI'] + nextLine[TAG]] = nextFileLineNum
                 elif nextLine[TAG] != 'NOTE' and nextLine[TAG] != 'HEAD' and nextLine[TAG] != 'TRLR':
                     if nextLine[TAG] == 'FAMS' or nextLine[TAG] == 'FAMC':
                         individual[nextLine[TAG]].append(nextLine[ARG])
+                        individual['lines'][nextLine[ARG] + nextLine[TAG]] = nextFileLineNum
                     else:
                         individual[nextLine[TAG]] = nextLine[ARG]
+                        individual['lines'][individual['INDI'] + nextLine[TAG]] = nextFileLineNum
 
                 nextLineNum += 1
                 lineNum = nextLineNum
                 if nextLineNum < fileLength:
-                    nextLine = validatedFile[nextLineNum]
+                    nextLine = validatedFile[nextLineNum][0]
+                    nextLineFileNum = validatedFile[nextLineNum][1]
             if lineNum < fileLength:
-                line = validatedFile[lineNum]
+                line = validatedFile[lineNum][0]
+                fileLineNum = validatedFile[nextLineNum][1]
         elif line[TAG] == 'FAM':
             family['FAM'] = line[ARG]
+            family['lines'][family['FAM'] + line[TAG]] = fileLineNum
             nextLineNum = lineNum + 1
-            nextLine = validatedFile[nextLineNum]
+            nextLine = validatedFile[nextLineNum][0]
+            nextFileLineNum = validatedFile[nextLineNum][1]
             while nextLineNum < fileLength and nextLine[TAG] != 'INDI' and nextLine[TAG] != 'FAM':
                 if nextLine[TAG] == 'MARR' or nextLine[TAG] == 'DIV':
                     nextLineNum += 1
-                    family[nextLine[TAG]] = validatedFile[nextLineNum][ARG]
+                    nextFileLineNum = validatedFile[nextLineNum][1]
+                    family[nextLine[TAG]] = validatedFile[nextLineNum][0][ARG]
+                    family['lines'][family['FAM'] + nextLine[TAG]] = nextFileLineNum
                 elif nextLine[TAG] != 'NOTE' and nextLine[TAG] != 'HEAD' and nextLine[TAG] != 'TRLR':
                     if nextLine[TAG] == 'CHIL':
                         family['CHIL'].append(nextLine[ARG])
+                        family['lines'][nextLine[ARG] + nextLine[TAG]] = nextFileLineNum
                     else:
                         family[nextLine[TAG]] = nextLine[ARG]
+                        family['lines'][family['FAM'] + nextLine[TAG]] = nextFileLineNum
 
                 nextLineNum += 1
 
                 lineNum = nextLineNum
                 if nextLineNum < fileLength:
-                    nextLine = validatedFile[nextLineNum]
+                    nextLine = validatedFile[nextLineNum][0]
+                    nextLineFileNum = validatedFile[nextLineNum][1]
         else:
             lineNum += 1
         if individual['INDI']:
@@ -133,14 +152,14 @@ def parseFile(validatedFile):
                 individual['FAMC'] = None
 
             individualTable.append(individual)
-            individual = {'INDI': None, 'NAME': None, 'SEX': None, 'BIRT': None, 'DEAT': None, 'FAMC': [], 'FAMS': []}
+            individual = {'INDI': None, 'NAME': None, 'SEX': None, 'BIRT': None, 'DEAT': None, 'FAMC': [], 'FAMS': [], 'lines': {}}
 
         if family['FAM']:
             if family['CHIL'] == []:
                 family['CHIL'] = None
 
             familyTable.append(family)
-            family = {'FAM': None, 'MARR': None, 'DIV': None, 'HUSB': None, 'WIFE': None, 'CHIL': []}
+            family = {'FAM': None, 'MARR': None, 'DIV': None, 'HUSB': None, 'WIFE': None, 'CHIL': [], 'lines': {}}
     return [individualTable, familyTable]
 
 def buildIndividualCollection(gedcomCollection):
@@ -148,8 +167,9 @@ def buildIndividualCollection(gedcomCollection):
     individualCol = []
 
     for individual in individualTable:
-        newIndividual = {'ID': None, 'Name': None, 'Gender': None, 'Birthday': None, 'Age': None, 'Alive': None, 'Death': None, 'Child': None, 'Spouse': None}
+        newIndividual = {'ID': None, 'Name': None, 'Gender': None, 'Birthday': None, 'Age': None, 'Alive': None, 'Death': None, 'Child': None, 'Spouse': None, 'lines': None}
         
+        newIndividual['lines'] = individual['lines']
         newIndividual['ID'] = individual['INDI']
         newIndividual['Name'] = individual['NAME']
         newIndividual['Gender'] = individual['SEX']
@@ -189,8 +209,8 @@ def buildFamilyCollection(gedcomCollection):
     familyCol = []
 
     for family in familyTable:
-        newFamily = {'ID': None, 'Married': None, 'Divorced': None, 'Husband ID': None, 'Husband Name': None, 'Wife ID': None, 'Wife Name': None, 'Children': None}
-
+        newFamily = {'ID': None, 'Married': None, 'Divorced': None, 'Husband ID': None, 'Husband Name': None, 'Wife ID': None, 'Wife Name': None, 'Children': None, 'lines': None}
+        newFamily['lines'] = family['lines']
         newFamily['ID'] = family['FAM']
         if family['MARR']:
             newFamily['Married'] = datetime.datetime.strptime(family['MARR'], '%d %b %Y').strftime('%Y-%m-%d')
@@ -258,14 +278,14 @@ def startApp(prettyGedcomTable):
 
     print('Goodbye!\n')
 
-def individualError(us, ID, msg):
-    print('ERROR: INDIVIDUAL: %s: %s: %s' % (us, ID, msg))
+def individualError(us, ID, msg, lineNum):
+    print('%s:ERROR: INDIVIDUAL: %s: %s: %s' % (lineNum, us, ID, msg))
 
-def familyError(us, ID, msg):
-    print('ERROR: FAMILY: %s: %s: %s' % (us, ID, msg))
+def familyError(us, ID, msg, lineNum):
+    print('%s:ERROR: FAMILY: %s: %s: %s' % (lineNum, us, ID, msg))
 
-def individualInfo(us, ID, msg):
-    print('INFO: INDIVIDUAL: %s: %s: %s' % (us, ID, msg))
+def individualInfo(us, ID, msg, lineNum):
+    print('%s:INFO: INDIVIDUAL: %s: %s: %s' % (lineNum, us, ID, msg))
 
-def familyInfo(us, ID, msg):
-    print('INFO: FAMILY: %s: %s: %s' % (us, ID, msg))
+def familyInfo(us, ID, msg, lineNum):
+    print('%s:INFO: FAMILY: %s: %s: %s' % (lineNum, us, ID, msg))

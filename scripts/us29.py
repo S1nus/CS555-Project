@@ -10,5 +10,5 @@ def getDead(people):
         if (not person["Death"] == None):
             if (getDate("Death", person) < datetime.now()):
                 dead.append(person['ID'])
-                print('NOTICE: INDIVIDUAL: US29: %s: Is deceased' % person['ID'])
+                print('%s:NOTICE: INDIVIDUAL: US29: %s: Is deceased' % (person['lines'][person['ID'] + 'DEAT'], person['ID']))
     return dead
