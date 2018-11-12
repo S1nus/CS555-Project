@@ -113,7 +113,7 @@ def parseFile(validatedFile):
                 lineNum = nextLineNum
                 if nextLineNum < fileLength:
                     nextLine = validatedFile[nextLineNum][0]
-                    nextLineFileNum = validatedFile[nextLineNum][1]
+                    nextFileLineNum = validatedFile[nextLineNum][1]
             if lineNum < fileLength:
                 line = validatedFile[lineNum][0]
                 fileLineNum = validatedFile[nextLineNum][1]
@@ -142,7 +142,7 @@ def parseFile(validatedFile):
                 lineNum = nextLineNum
                 if nextLineNum < fileLength:
                     nextLine = validatedFile[nextLineNum][0]
-                    nextLineFileNum = validatedFile[nextLineNum][1]
+                    nextFileLineNum = validatedFile[nextLineNum][1]
         else:
             lineNum += 1
         if individual['INDI']:
